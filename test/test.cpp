@@ -1,11 +1,9 @@
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/generators/catch_generators.hpp>
 #include <catch2/generators/catch_generators_all.hpp>
 #include <noajson.hpp>
 #include <noajson/stl_serialize.hpp>
 #include <map>
 #include <unordered_map>
-#include <vector>
 
 struct CoolStruct {
 	std::string name;
