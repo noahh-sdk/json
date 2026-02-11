@@ -296,9 +296,19 @@ int main() {
 		assert(arr.template as<USet>() == uset);
 	}
 	{
-		auto obj = json::parse("{\"hello\": \"Ol\xC3\xA1!\"}");
-		assert(obj["hello"].as_string() == "Ol\xC3\xA1!");
-		std::cout << obj["hello"].as_string() << std::endl;
+		auto val1 = json::parse(R"("value")");
+		auto val2 = json::parse(R"({ "key": 4 })");
+		auto val3 = json::Object {
+			{ "key", 4 },
+		};
+		auto val4 = json::Object {
+			{ "key", 6 },
+		};
+		std::unordered_set<json::Value> values { val1, val2, val3, val4 };
+		std::unordered_set<json::Value> against { val1, val2, val4 };
+		assert(values.size() == against.size());
+		assert(values == against);
+		println(json::Value(values).dump());
 	}
 	println("All tests passed :3");
 }
