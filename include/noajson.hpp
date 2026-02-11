@@ -25,7 +25,7 @@
 	#define NOA_JSON_DLL
 #endif
 
-namespace json {
+namespace noajson {
 	enum class Type {
 		Object,
 		Array,
@@ -46,9 +46,9 @@ namespace json {
 	using JsonException = std::runtime_error;
 
 	// Specialize this class and implement the following methods (not all required)
-	// static T from_json(const json::Value&);
-	// static json::Value to_json(const T&);
-	// static bool is_json(const json::Value&);
+	// static T from_json(const noajson::Value&);
+	// static noajson::Value to_json(const T&);
+	// static bool is_json(const noajson::Value&);
 	template <class T>
 	struct Serialize;
 
@@ -127,7 +127,7 @@ namespace json {
 		bool contains(std::string_view key) const;
 		size_t count(std::string_view key) const;
 
-		// Use json::NO_INDENTATION for a compact json, json::TAB_INDENTATION for tabs,
+		// Use noajson::NO_INDENTATION for a compact json, noajson::TAB_INDENTATION for tabs,
 		// otherwise specifies the amount of spaces
 		std::string dump(int indentation_size = 4) const;
 
@@ -150,7 +150,7 @@ namespace json {
 			} else if constexpr (std::is_same_v<T, Value>) {
 				return *this;
 			} else {
-				static_assert(!std::is_same_v<T, T>, "no conversion found from json::Value to T");
+				static_assert(!std::is_same_v<T, T>, "no conversion found from noajson::Value to T");
 			}
 		}
 
@@ -239,6 +239,6 @@ namespace json {
 }
 
 template <>
-struct std::hash<json::Value> {
-	NOA_JSON_DLL std::size_t operator()(json::Value const& value) const;
+struct std::hash<noajson::Value> {
+	NOA_JSON_DLL std::size_t operator()(noajson::Value const& value) const;
 };

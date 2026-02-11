@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../json.hpp"
+#include "../noajson.hpp"
 #include <set>
 #include <unordered_set>
 #include <map>
 #include <unordered_map>
 #include <algorithm>
 
-namespace json {
+namespace noajson {
 	// allow converting parsing JSON directly to STL containers for convenience
 
 	template <class T>

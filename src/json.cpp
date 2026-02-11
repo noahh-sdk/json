@@ -1,4 +1,4 @@
-#include <json.hpp>
+#include <noajson.hpp>
 #include <stdexcept>
 #include <version>
 
@@ -10,7 +10,7 @@
 #include <sstream>
 #endif
 
-using namespace json;
+using namespace noajson;
 using namespace std::literals::string_view_literals;
 
 // Implementation for ValueImpl, which actually stores the value

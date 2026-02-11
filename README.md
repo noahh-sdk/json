@@ -9,9 +9,9 @@ json library i made quickly for noahh. preserves insertion order for objects
 ## Example
 
 ```cpp
-#include <json.hpp>
+#include <noajson.hpp>
 
-auto object = json::parse(R"(
+auto object = noajson::parse(R"(
     {
         "hello": "world",
         "foo": {
@@ -34,13 +34,13 @@ For the sake of simplicty, the library can only parse from a string, so you will
 ```cpp
 std::string file_contents = ...
 
-auto object = json::parse(file_contents);
+auto object = noajson::parse(file_contents);
 ```
 
 ## Saving to a file
 The library can also only directly output a string.
 ```cpp
-json::Value object = ...
+noajson::Value object = ...
 
 std::string file_contents = object.dump();
 write_to_file("epic.json", file_contents);
@@ -50,7 +50,7 @@ write_to_file("epic.json", file_contents);
 ## Accessing values
 There are many different ways to access inner values, depending on your needs:
 ```cpp
-auto object = json::parse(R"(
+auto object = noajson::parse(R"(
     {
         "hello": "world",
         "foo": {
@@ -72,7 +72,7 @@ object["foo"]["numbers"][0].as_int(); // 123
 object["foo"]["numbers"][0].as<int>(); // 123
 object["foo"]["numbers"].get<int>(0); // 123
 
-object.try_get("foo"); // std::optional<json::Value>(...)
+object.try_get("foo"); // std::optional<noajson::Value>(...)
 object.try_get("sup"); // std::nullopt
 object.contains("sup"); // false
 
@@ -86,7 +86,7 @@ object["hello"].is<std::string>(); // true
 ```
 
 ## Custom types
-It is possible (de)serialize your own types into json, by specializing `json::Serialize<T>`.
+It is possible (de)serialize your own types into json, by specializing `noajson::Serialize<T>`.
 ```cpp
 struct User {
     std::string name;
@@ -94,27 +94,27 @@ struct User {
 }
 
 template <>
-struct json::Serialize<User> {
-    static User from_json(const json::Value& value) {
+struct noajson::Serialize<User> {
+    static User from_json(const noajson::Value& value) {
         return User {
             .name = value["name"].as_string(),
             .age = value["age"].as_int(),
         };
     }
-    static json::Value to_json(const User& user) {
-        return json::Object {
+    static noajson::Value to_json(const User& user) {
+        return noajson::Object {
             { "name", user.name },
             { "age", user.age }
         };
     }
     // You can also implement this method:
-    // > static bool is_json(const json::Value& value);
+    // > static bool is_json(const noajson::Value& value);
     // It is only used if you do value.is<User>();
 };
 
 User user = { "noa", 123 };
-json::Value value = user; // gets converted into json
-value.dump(json::NO_INDENTATION); // {"name":"noa","age":123}
+noajson::Value value = user; // gets converted into json
+value.dump(noajson::NO_INDENTATION); // {"name":"noa","age":123}
 value["name"] = "hello";
 // you have to use the templated methods for accessing custom types!
 auto user2 = value.as<User>();
@@ -122,10 +122,10 @@ user2.name; // "hello"
 ```
 
 ## Dumping to string
-To save a json value to a file or to pretty print it you can use the `json::Value::dump` method.
+To save a json value to a file or to pretty print it you can use the `noajson::Value::dump` method.
 ```cpp
 // from the previous section
-json::Value value = User { "noa", 123 };
+noajson::Value value = User { "noa", 123 };
 
 // by default dumps with 4 spaces
 value.dump();
@@ -141,18 +141,18 @@ value.dump(1); // 1 space identation
 // }
 
 // will create a compact json with no extra whitepace
-value.dump(json::NO_INDENTATION);
+value.dump(noajson::NO_INDENTATION);
 value.dump(0); // same as above
 // {"name":"noa","age":123}
 
-value.dump(json::TAB_INDENTATION); // will indent with tabs
+value.dump(noajson::TAB_INDENTATION); // will indent with tabs
 // like imagine '{\n\t"name": "noa",\n\t"age": 123\n}'
 ```
 
 ## misc
 ```cpp
 // default constructs to a json object, for convenience
-json::Value value;
+noajson::Value value;
 
 // null is nullptr
 value["hello"] = nullptr;
